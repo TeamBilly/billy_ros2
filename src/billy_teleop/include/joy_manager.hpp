@@ -6,6 +6,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 #include "sensor_msgs/msg/joy.hpp"
+#include "geometry_msgs/msg/twist.hpp"
 
 using namespace std::chrono_literals;
 
@@ -25,21 +26,26 @@ class JoyManager : public rclcpp::Node
 
   private:
     void createPublishers();
-    rclcpp::TimerBase::SharedPtr timer_;
     rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
+    rclcpp::TimerBase::SharedPtr timer_;
     void timer_callback();
+    rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr publisher_cmd_vel_;
+    rclcpp::TimerBase::SharedPtr timer_cmd_vel_;
+    void callbackTimerCmdVel();
 
     void createSubscribers();
     rclcpp::Subscription<sensor_msgs::msg::Joy>::SharedPtr subscriber_joy_;
     void callbackJoy(sensor_msgs::msg::Joy::SharedPtr msg);
 
     // Variables
-    float joy_turn_;
-    float joy_speed_;
-    float joy_speed_previous_;
+    float joy_turn_limited_;
+    std::chrono::steady_clock::time_point rate_limiter_previous_time_turn_;
+    float joy_speed_limited_;
+    std::chrono::steady_clock::time_point rate_limiter_previous_time_speed_;
 
-    float rateLimiter(float input, float output_previous);
-    std::chrono::steady_clock::time_point rate_limiter_previous_time_;
+    float rateLimiter(float input, 
+                      float output_previous, 
+                      std::chrono::steady_clock::time_point &previous_time);
 
     size_t count_;
 

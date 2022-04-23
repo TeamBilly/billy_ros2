@@ -20,6 +20,7 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
 
 # uncomment the following section in order to fill in
 # further dependencies manually.
@@ -30,7 +31,7 @@ target_include_directories(joy_manager PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 
-ament_target_dependencies(joy_manager rclcpp std_msgs sensor_msgs)
+ament_target_dependencies(joy_manager rclcpp std_msgs sensor_msgs geometry_msgs)
 
 install(TARGETS
   joy_manager
