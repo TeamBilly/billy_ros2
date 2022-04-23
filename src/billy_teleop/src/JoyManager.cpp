@@ -53,8 +53,8 @@ void JoyManager::callbackJoy(const sensor_msgs::msg::Joy::SharedPtr msg)
     joy_turn_limited_ = rateLimiter(joy_turn, joy_turn_limited_, rate_limiter_previous_time_turn_);
 }
 
-float JoyManager::rateLimiter(float input, 
-                              float output_previous, 
+template <typename T> T JoyManager::rateLimiter(T input, 
+                              T output_previous, 
                               std::chrono::steady_clock::time_point &previous_time)
 {
     // Computing time difference
@@ -64,10 +64,10 @@ float JoyManager::rateLimiter(float input,
 
 
     // Compute the rate
-    float rate = (input - output_previous) / time_diff.count();
+    T rate = (input - output_previous) / time_diff.count();
 
     // Evaluating rate
-    float output = output_previous;
+    T output = output_previous;
     if(rate > RISING_SLEW_RATE) {
         output = time_diff.count()*RISING_SLEW_RATE + output_previous;
     } else if (rate < FALLING_SLEW_RATE) {

@@ -43,8 +43,8 @@ class JoyManager : public rclcpp::Node
     float joy_speed_limited_;
     std::chrono::steady_clock::time_point rate_limiter_previous_time_speed_;
 
-    float rateLimiter(float input, 
-                      float output_previous, 
+    template <typename T> T rateLimiter(T input, 
+                      T output_previous, 
                       std::chrono::steady_clock::time_point &previous_time);
 
     size_t count_;
