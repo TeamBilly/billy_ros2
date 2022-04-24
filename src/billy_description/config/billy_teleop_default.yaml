@@ -1,0 +1,9 @@
+# billy_teleop
+billy_teleop_node:
+    ros__parameters:
+        verbose: 0
+        deadzone: 0.02
+        callback_cmd_vel_period: 10
+        straight_speed: 0.5
+        half_turn_speed: 0.5
+
