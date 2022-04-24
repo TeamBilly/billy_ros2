@@ -45,8 +45,8 @@ void JoyManager::callbackJoy(const sensor_msgs::msg::Joy::SharedPtr msg)
     auto joy_turn = msg->axes[3];
 
     // Adjust to config values
-    joy_speed *= SPEED_MAX;
-    joy_turn *= TURN_MAX;
+    joy_speed *= BILLY_CONST.MOTION.LIN_X_MAX;
+    joy_turn *= BILLY_CONST.MOTION.ANG_Z_MAX;
 
     // Limit rate of values
     joy_speed_limited_ = rateLimiter(joy_speed, joy_speed_limited_, rate_limiter_previous_time_speed_);
@@ -68,10 +68,10 @@ template <typename T> T JoyManager::rateLimiter(T input,
 
     // Evaluating rate
     T output = output_previous;
-    if(rate > RISING_SLEW_RATE) {
-        output = time_diff.count()*RISING_SLEW_RATE + output_previous;
-    } else if (rate < FALLING_SLEW_RATE) {
-        output = time_diff.count()*FALLING_SLEW_RATE + output_previous;
+    if(rate > BILLY_CONST.MOTION.ACCEL_MAX) {
+        output = time_diff.count() * BILLY_CONST.MOTION.ACCEL_MAX + output_previous;
+    } else if (rate < BILLY_CONST.MOTION.DECEL_MAX) {
+        output = time_diff.count() * BILLY_CONST.MOTION.DECEL_MAX + output_previous;
     } else {
         output = input;
     }
