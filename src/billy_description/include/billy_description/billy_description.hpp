@@ -13,6 +13,8 @@ public:
 
     virtual ~BillyDescription();
 
+    enum mode{idle, teleop, half_turn, straight};
+
     struct motion{
         const float LIN_X_MAX = 2.0; // in m/s
         const float ANG_Z_MAX = 3.14; // in rad/s
