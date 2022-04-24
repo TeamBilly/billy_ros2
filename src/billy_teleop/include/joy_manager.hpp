@@ -8,15 +8,13 @@
 #include "sensor_msgs/msg/joy.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 
+#include "billy_description/billy_description.hpp"
+
 using namespace std::chrono_literals;
 
 /* This example creates a subclass of Node and uses std::bind() to register a
 * member function as a callback from the timer. */
 
-#define RISING_SLEW_RATE 1
-#define FALLING_SLEW_RATE -1
-#define SPEED_MAX 10
-#define TURN_MAX 30
 #define VERBOSE 0
 
 class JoyManager : public rclcpp::Node
@@ -25,6 +23,7 @@ class JoyManager : public rclcpp::Node
     JoyManager();
 
   private:
+    billy_description::BillyDescription BILLY_CONST;
     void createPublishers();
     rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
     rclcpp::TimerBase::SharedPtr timer_;
