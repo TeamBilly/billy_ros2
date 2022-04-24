@@ -1,7 +1,0 @@
-# billy_teleop
-/**:
-  ros_parameters:
-      verbose: 0
-      rising_slew_rate 1
-      falling_slew_rate 1
-

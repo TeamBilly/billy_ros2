@@ -23,15 +23,24 @@ class JoyManager : public rclcpp::Node
     JoyManager();
 
   private:
+    // Init
     billy_description::BillyDescription BILLY_CONST;
+    void initParam();
+    uint8_t p_verbose_;
+    uint16_t p_callback_cmd_vel_period_;
+
+
+    // Publishers
     void createPublishers();
     rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
     rclcpp::TimerBase::SharedPtr timer_;
     void timer_callback();
+
     rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr publisher_cmd_vel_;
     rclcpp::TimerBase::SharedPtr timer_cmd_vel_;
     void callbackTimerCmdVel();
 
+    // subscribers
     void createSubscribers();
     rclcpp::Subscription<sensor_msgs::msg::Joy>::SharedPtr subscriber_joy_;
     void callbackJoy(sensor_msgs::msg::Joy::SharedPtr msg);

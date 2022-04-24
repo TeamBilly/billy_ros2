@@ -5,16 +5,34 @@ using std::placeholders::_1;
 
 JoyManager::JoyManager() : Node("joy_manager_node"), count_(0)
 {
+    initParam();
     createPublishers();
     createSubscribers();
+}
+
+void JoyManager::initParam()
+{
+    // Parameters verbose. Debug purposes.
+    this->declare_parameter<int>("verbose", 0);
+    this->get_parameter("verbose", p_verbose_);
+    RCLCPP_INFO(this->get_logger(), "Init param 'verbose': '%d'", p_verbose_);
+
+    // Parameters callback_cmd_vel_period. Define the /cmd_vel publish frequecy in ms.
+    this->declare_parameter<int>("callback_cmd_vel_period", 10);
+    this->get_parameter("callback_cmd_vel_period", p_callback_cmd_vel_period_);
+    RCLCPP_INFO(this->get_logger(), "Init param 'callback_cmd_vel_period': '%d'",
+      p_callback_cmd_vel_period_);
+
 }
 
 void JoyManager::createPublishers()
 {
     publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
     timer_ = this->create_wall_timer(500ms, std::bind(&JoyManager::timer_callback, this));
+
     publisher_cmd_vel_ = this->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel", 10);
-    timer_cmd_vel_ = this->create_wall_timer(10ms, std::bind(&JoyManager::callbackTimerCmdVel, this));
+    auto period_cmd_vel = p_callback_cmd_vel_period_ * 1ms;
+    timer_cmd_vel_ = this->create_wall_timer(period_cmd_vel, std::bind(&JoyManager::callbackTimerCmdVel, this));
 }
 
 void JoyManager::createSubscribers()

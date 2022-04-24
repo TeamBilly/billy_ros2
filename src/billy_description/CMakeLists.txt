@@ -35,6 +35,12 @@ install(
   DIRECTORY include/
   DESTINATION include
 )
+
+install(DIRECTORY
+    config
+    DESTINATION share/${PROJECT_NAME}
+)
+
 install(
   TARGETS billy_description
   EXPORT export_${PROJECT_NAME}

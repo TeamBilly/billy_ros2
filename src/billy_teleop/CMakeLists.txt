@@ -43,6 +43,11 @@ target_link_libraries(joy_manager
 
 ament_target_dependencies(joy_manager rclcpp std_msgs sensor_msgs geometry_msgs)
 
+# Installing
+install(DIRECTORY
+    launch
+    DESTINATION share/${PROJECT_NAME})
+
 install(TARGETS
   joy_manager
   DESTINATION lib/${PROJECT_NAME})
